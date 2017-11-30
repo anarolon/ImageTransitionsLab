@@ -1,5 +1,7 @@
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.Random;
+
 import javax.swing.JPanel;
 
 public class RightPanel extends JPanel {
@@ -56,6 +58,28 @@ public class RightPanel extends JPanel {
 		}
 	}
 	
+	// Displays the picture on the frame using randomly generated pixel coords
+	public void transitionRandom(Graphics g, BufferedImage leftImage) {
+		int width = leftImage.getWidth();
+		int height = leftImage.getHeight();
+		
+		for(int i = 0; i < height; i++) {
+			Random randY = new Random();
+			int randomY = randY.nextInt(height);
+			for(int j = 0; j < width; j++) {
+				Random randX = new Random();
+				int randomX = randX.nextInt(width);
+				int pixelColor = leftImage.getRGB(randomX, randomY); // Random pixel
+				int pixelColor2 = leftImage.getRGB(j, i);			// Fixed pixel
+				img.setRGB(randomX, randomY, pixelColor);
+				img.setRGB(j, i, pixelColor2);
+			}
+			repaint();
+			try { Thread.sleep(10); } catch (InterruptedException e) {};
+		}
+		
+	}
+	
 	//
 	// Transition by diagonals bottom to top left to right
 	public void transitionDiagonal45LR(Graphics g, BufferedImage leftImage) {
@@ -97,6 +121,7 @@ public class RightPanel extends JPanel {
 			}
 		}
 		else {
+			// Lab Q3: Add code to consider image with larger height than width
 				// Image with larger width than height		
 				for (int col=0; col<width; col++){
 					int diagonalRow = col;
@@ -130,7 +155,6 @@ public class RightPanel extends JPanel {
 					try { Thread.sleep(10); } catch (InterruptedException e) { };
 				}
 			
-			// Lab Q3: Add code to consider image with larger height than width
 		}
 	}	
 }
